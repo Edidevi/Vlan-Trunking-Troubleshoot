@@ -31,17 +31,18 @@ Firstly, I avoided using hover since it is not reflective of a real world scenar
 <img width="523" height="266" alt="image" src="https://github.com/user-attachments/assets/30317f1c-37d8-4a1f-a08d-53382cb93466" />
 
 Firstly, I avoided using hover since it is not reflective of a real world scenario.
+pinged PC3 using PC1 and it was succesful. Pinged PC4 using PC2 and it was not.
+This ruled the PC3 and PC1.
+- **Physical:** I Checked at physical layer: I could see that all connections where green- meaning link is active and up on both ends. Because of this, I moved on to layer 2.
+- **Layer 2:**  I then logged into switch 1 and typed "Show VLAN" to idenitfy any VLAN abnormalities. THe right ports were assigned to the rigth VLAN.
+- **
 
-- **Physical:** I Checked at physical layer: I could see that all connections where green- meaning link is active and up on both ends
-- **Layer 2:**  I then logged into switch 1 and typed "Show VLAN" to idenitfy any VLAN abnormalities
-- **Problem found:** In the results this message came up `%CDP-4-NATIVE_VLAN_MISMATCH: Native VLAN mismatch discovered on FastEthernet0/1 (10), with S2 FastEthernet0/1 (1)`. I also saw that for the supposed trunk port, port `fa0/1` was explicity under VLAN 10, relfelcting the behaviour of an access port.
-- I then typed `show interfaces fa0/1 switchport` to confirm my suspicions. Under both admin and operational access rows, it was listed as static accesss.
-- I entered global conf mode, entered `interface fa0/1`, then used `switchport mode trunk`. After running `show interfaces fa0/1 switchport` again, static access had now been replaced by trunk.
-- I typed `Show vlan` and behold, `fa0/1` was no longer explicitly in VLAN 10. The native VLAN mismatch command also was no longer present.
-- I then pinged both opposing computers PC1 to PC3 and PC2 to PC4 and both pings were 100% succesfull.
-
-
+<img width="371" height="163" alt="image" src="https://github.com/user-attachments/assets/fd5217cc-ed92-42a0-821a-e12d610222fc" />
+allowed me to quickly verify if switch was correctly recieving packets 
  
+<img width="368" height="114" alt="image" src="https://github.com/user-attachments/assets/0dbb47ef-8442-4df5-8cda-0683fd799854" />
+
+it seems that the packet does not get to the second router? the commands allowed me to isolate the issue to the left half of the network.
 
  
 
