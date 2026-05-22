@@ -53,9 +53,23 @@ TICKETID-2026-001: PC1 can reach PC3 but PC2 can't reach PC4
 And i saw the line `switchport trunk allowed vlan 10`. This explains the issue, because if you expliictly allow VLAN 10, it will blaock every other VLAN other than VLAN 10. So i entered the sub configuration `interface fa0/1`, and entered `switchport trunk allowed vlan add 20` to add vlan 20`. 
 After writing this to memeory, i was able to successfully ping PC4 from PC2.
 
+## Scenario 3
+Ticket #0043 — "Staff on S2 side can't reach colleagues on S1 — nothing is getting through between the two switches"
+This is the last troubleshooting scenario i wanted to attempt for standard VLANs before moving on
+- the green lights once again show that the physical connections are fine
+- Tried to ping every computers on same vlan and network to verify the issue, couldn't reach them
+- I then typed `show vlan` to check if there were vlan issues. Since the issue is that the swithces can't reach each other, it must be a trunking issue
 
+<img width="547" height="45" alt="image" src="https://github.com/user-attachments/assets/3aff20e4-738d-4d8b-b64a-66ddc10bdd50" />
 
+It is clear in the error message that the trunk port on the S2 side is assigned incorrectly to `VLAN 10`. A trunk port shoudn't specifically be assigned to one VLAN. It defeats teh purpose of enabling the port a trunk port in the first place.
 
+- I then typed `show interface trunk` to ensure that both ports were enabled as trunk ports. On S1, the command returned  `fa0/1`, but on S2, no ports came up. So 2 issues have been identified.
+- My first step is to enable S2 port as a trunk port, I entered subconfiguration mode for `interface fa0/1`, then typed `switchport mode trunk` to enable the interface as a trunk port.I then typed `write memory`, to ensure that the same issue would nto come up again for the staff if someone rebooted the router.
+- I then pinged PC3 from PC1 and PC4 from PC1. PC3 ping was succesfull as theyre are on same VLAN and in same network. PC4 was unsuccesful as its on a different network and vlan.
+- I then pinged PC4 from PC2 and PC3 from PC2. The ping to PC3 didnt work but PC4 did.
+- This shows the ticket has been resolved and i can move on
 
- 
+## :chart_with_upwards_trend: Learning
+From troubleshooting these VLANs, I learnt the importance of assigning the ports to the right VLANs, as well as enabling ports corectly as trunk or access ports depending on the requirements.
 
