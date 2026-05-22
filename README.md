@@ -14,7 +14,9 @@ The objective of this lab is to show my troubleshooting acumen for a VLAN topolo
 To troubleshoot, i made an effort to go layer by layer, as there is no poing pinging if you haven't checked for possible physcial layer issues
 
 
-## Troubleshoot 1 
+## Scenario 1 
+TICKETID-2026-001: VLAN issue
+
 <img width="523" height="266" alt="image" src="https://github.com/user-attachments/assets/30317f1c-37d8-4a1f-a08d-53382cb93466" />
 
 Firstly, I avoided using hover since it is not reflective of a real world scenario.
@@ -27,22 +29,20 @@ Firstly, I avoided using hover since it is not reflective of a real world scenar
 - I typed `Show vlan` and behold, `fa0/1` was no longer explicitly in VLAN 10. The native VLAN mismatch command also was no longer present.
 - I then pinged both opposing computers PC1 to PC3 and PC2 to PC4 and both pings were 100% succesfull.
 
-## Troubleshoot 2  
+## Scenario 2  
+TICKETID-2026-001: PC1 can reach PC3 but PC2 can't reach PC4
+
 <img width="523" height="266" alt="image" src="https://github.com/user-attachments/assets/30317f1c-37d8-4a1f-a08d-53382cb93466" />
 
-Firstly, I avoided using hover since it is not reflective of a real world scenario.
-pinged PC3 using PC1 and it was succesful. Pinged PC4 using PC2 and it was not.
-This ruled the PC3 and PC1.
+
 - **Physical:** I Checked at physical layer: I could see that all connections where green- meaning link is active and up on both ends. Because of this, I moved on to layer 2.
-- **Layer 2:**  I then logged into switch 1 and typed "Show VLAN" to idenitfy any VLAN abnormalities. THe right ports were assigned to the rigth VLAN.
-- **
+- **Layer 2:**  I then logged into switch 1 and typed "Show VLAN" to idenitfy any VLAN abnormalities. THe right ports were assigned to the right VLAN & the trunk port was not explicitly aligned to a VLAN like the last troubleshoot.
+- MAC addresses are another layer 2 feature, so i pinged PC3 from PC1, then typed `show mac-address-table` on both switches to check if the mac address of VLAN 20 (PC2 & PC4) would show up, to ensure that the packets crossed both switches.
 
-<img width="371" height="163" alt="image" src="https://github.com/user-attachments/assets/fd5217cc-ed92-42a0-821a-e12d610222fc" />
-allowed me to quickly verify if switch was correctly recieving packets 
- 
-<img width="368" height="114" alt="image" src="https://github.com/user-attachments/assets/0dbb47ef-8442-4df5-8cda-0683fd799854" />
+<img width="40%" height="163" alt="image" src="https://github.com/user-attachments/assets/fd5217cc-ed92-42a0-821a-e12d610222fc" />
+<img width="40%" height="164" alt="image" src="https://github.com/user-attachments/assets/0dbb47ef-8442-4df5-8cda-0683fd799854" />
 
-it seems that the packet does not get to the second router? the commands allowed me to isolate the issue to the left half of the network.
-
+- This showed that the ping was getting to switch 1, but are not getting to switch 2. I then started to think, what could possible be happening at switch 2?
+- Even though the green on the layout meant that there should not be any interface issues, i typed "show interface brief"
  
 
