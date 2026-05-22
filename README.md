@@ -43,6 +43,19 @@ TICKETID-2026-001: PC1 can reach PC3 but PC2 can't reach PC4
 <img width="40%" height="164" alt="image" src="https://github.com/user-attachments/assets/0dbb47ef-8442-4df5-8cda-0683fd799854" />
 
 - This showed that the ping was getting to switch 1, but are not getting to switch 2. I then started to think, what could possible be happening at switch 2?
-- Even though the green on the layout meant that there should not be any interface issues, i typed "show interface brief"
+- Even though the green on the layout meant that there should not be any interface issues, i typed `show ip interface brief` and `show vlan` to see if there were any layer 1 and 2 issues that i missed
+- It took me a while, I started checking the pcs themselves and reattaching lines, but in the end, I went back to what had been proven:
+- PC1 and PC3 could ping between each other, the ports were assigned to the right VLANs and the ping was getting to S1 but not S2, so it HAD to be a swtich problem
+- So i typed `show running-config` to see everything type in the switch
+
+<img width="353" height="277" alt="image" src="https://github.com/user-attachments/assets/03b193ff-82ee-4540-ab7f-c39bed0142fb" />
+
+And i saw the line `switchport trunk allowed vlan 10`. This explains the issue, because if you expliictly allow VLAN 10, it will blaock every other VLAN other than VLAN 10. So i entered the sub configuration `interface fa0/1`, and entered `switchport trunk allowed vlan add 20` to add vlan 20`. 
+After writing this to memeory, i was able to successfully ping PC4 from PC2.
+
+
+
+
+
  
 
